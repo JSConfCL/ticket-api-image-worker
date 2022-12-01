@@ -55,7 +55,7 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
       env
     );
     console.log("Image created");
-    await ticketsKV.put(ticketId, img, { expirationTtl: 60 });
+    await ticketsKV.put(ticketId, img, { expirationTtl: env.TTL_EN_SEGUNDOS });
 
     return c.body(img);
   } catch (e) {
