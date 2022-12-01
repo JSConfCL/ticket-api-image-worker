@@ -13,6 +13,9 @@ TTL_EN_SEGUNDOS = 60
 
 [env.dev]
 name = "tickets-images-worker-dev"
+kv_namespaces = [
+    { binding = "TICKETS_QR_IMAGES", id = "aa45c255f6f441dda71e45b0c11f132a" , preview_id = "b297786957b249dca99978fad2cf95cb" }
+]
 
 [env.dev.vars]
 API_URL = "https://tickets-api-dev.fly.dev/api/v1/tickets/qr/info"
@@ -26,4 +29,7 @@ name = "tickets-images-worker-production"
 API_URL = "https://tickets-api-production.fly.dev/api/v1/tickets/qr/info"
 APP_ENV = "production"
 TTL_EN_SEGUNDOS = 600
+kv_namespaces = [
+    { binding = "TICKETS_QR_IMAGES", id = "aa45c255f6f441dda71e45b0c11f132a" , preview_id = "b297786957b249dca99978fad2cf95cb" }
+]
 # TTL_EN_SEGUNDOS = 2678400
