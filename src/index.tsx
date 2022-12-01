@@ -3,12 +3,14 @@ import { Hono } from "hono";
 import { createImage } from "./Image";
 import React from "react";
 import { Ticket } from "./Ticket";
+import { Env } from "./sharedTypes";
 
 const app = new Hono();
 
 app.get("/ticket/image/:ticketId", cors(), async (c) => {
   try {
-    const ticketsKV = c.env.TICKETS_QR_IMAGES as KVNamespace;
+    const env = c.env as Env;
+    const ticketsKV = env.TICKETS_QR_IMAGES as KVNamespace;
     const ticketId = c.req.param("ticketId");
     if (!ticketId) {
       throw new Error("no ticket");
@@ -29,7 +31,7 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
     // Hit our API
     const headers = new Headers();
     headers.append("Content-Type", "text/javascript");
-    const url = `${c.env.API_URL}/${ticketId}`;
+    const url = `${env.API_URL}/${ticketId}`;
     console.log("Fetching API data", url);
     const rawResponse = await fetch(url, {
       headers,
@@ -50,7 +52,7 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
         fullName={response.name}
         imageUrl={response.userPhoto}
       />,
-      c.env
+      env
     );
     console.log("Image created");
     await ticketsKV.put(ticketId, img, { expirationTtl: 60 });

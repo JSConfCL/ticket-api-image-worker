@@ -1,1 +1,1 @@
-http://localhost:8787/ticket/image?ticket_id=myid&user_id=Felipe
+http://localhost:8787/ticket/image/user_ticket_AqIjU_I0NTnbnmzh_Gbyk
