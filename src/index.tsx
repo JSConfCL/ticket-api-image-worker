@@ -7,6 +7,46 @@ import { Env } from "./sharedTypes";
 
 const app = new Hono();
 
+const getApiInformation = async (URL: string, ticketId: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "text/javascript");
+  const url = `${URL}/${ticketId}`;
+  console.log("Fetching API data", url);
+  const rawResponse = await fetch(url, {
+    headers,
+  });
+  console.log("parsing API result");
+  const response = (await rawResponse.json()) as {
+    userId: string;
+    username: string;
+    ticketId: string;
+    userPhoto: string | null;
+    name: string | null;
+  };
+
+  return response;
+};
+
+const decodeImage = (img: Uint8Array) => {
+  console.log("decoding image");
+  const response = String.fromCharCode(...new Uint8Array(img));
+  console.log("image is decoded");
+  return response;
+};
+
+const encodeImage = (decoded: string) => {
+  console.log("encoding image back");
+  const response = Uint8Array.from(
+    [...decoded].map((ch) => ch.charCodeAt(0))
+  ).buffer;
+  console.log("image is encoded");
+  return response;
+};
+
+const defaultImageHeaders = new Headers();
+defaultImageHeaders.append("Cache-Control", "max-age=604800");
+defaultImageHeaders.append("Content-Type", "image/png");
+
 app.get("/ticket/image/:ticketId", cors(), async (c) => {
   try {
     const env = c.env as Env;
@@ -15,36 +55,22 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
     if (!ticketId) {
       throw new Error("no ticket");
     }
-
-    c.header("Cache-Control", "max-age=604800");
-    c.header("Content-Type", "image/png");
-
     console.log("checking if the image is stored");
-    const storedImage = await ticketsKV.getWithMetadata(ticketId);
-    console.log("Image metadata", storedImage.metadata);
-    if (storedImage.value) {
-      console.log("Image is indeed stored");
-      return c.body(storedImage.value);
+    const { value: storedImage } = await ticketsKV.getWithMetadata<{
+      length: string;
+    }>(ticketId);
+    const parsedHeaders = Object.fromEntries(defaultImageHeaders.entries());
+    if (storedImage) {
+      console.log("image cache found");
+      const encoded = encodeImage(storedImage);
+      console.log("returning");
+      return c.body(encoded, 200, parsedHeaders);
+    } else {
+      console.log("image cache not found");
     }
-    console.log("Image is not stored");
-
+    const response = await getApiInformation(env.API_URL, ticketId);
     // Hit our API
-    const headers = new Headers();
-    headers.append("Content-Type", "text/javascript");
-    const url = `${env.API_URL}/${ticketId}`;
-    console.log("Fetching API data", url);
-    const rawResponse = await fetch(url, {
-      headers,
-    });
-    console.log("parsing API result");
-    const response = (await rawResponse.json()) as {
-      userId: string;
-      username: string;
-      ticketId: string;
-      userPhoto: string | null;
-      name: string | null;
-    };
-    console.log("creating image", { response });
+    console.log("creating image with API data", { response });
     const img = await createImage(
       <Ticket
         ticketId={response.ticketId}
@@ -54,10 +80,15 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
       />,
       env
     );
-    console.log("Image created");
-    await ticketsKV.put(ticketId, img, { expirationTtl: env.TTL_EN_SEGUNDOS });
+    const decoded = decodeImage(img);
+    console.log("Storing in cache");
+    await ticketsKV.put(ticketId, decoded, {
+      expirationTtl: env.TTL_EN_SEGUNDOS,
+    });
+    console.log("Stored in cache");
 
-    return c.body(img);
+    console.log("Returning");
+    return c.body(img, 200, parsedHeaders);
   } catch (e) {
     console.error(e);
     return c.json({ error: true }, 500);
