@@ -46,6 +46,8 @@ const encodeImage = (decoded: string) => {
 const defaultImageHeaders = new Headers();
 defaultImageHeaders.append("Cache-Control", "max-age=604800");
 defaultImageHeaders.append("Content-Type", "image/png");
+defaultImageHeaders.append("Content-Disposition", "inline");
+defaultImageHeaders.append("Strict-Transport-Security", "max-age=31536000");
 
 app.get("/ticket/image/:ticketId", cors(), async (c) => {
   try {
