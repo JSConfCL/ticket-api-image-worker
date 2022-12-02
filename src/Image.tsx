@@ -70,6 +70,6 @@ export const createImage = async (node: JSX.Element, env: Env) => {
   const resvg = new Resvg(svg);
   const pngData = resvg.render();
   const pngBuffer = pngData.asPng();
-
+  console.log("image created");
   return pngBuffer;
 };
