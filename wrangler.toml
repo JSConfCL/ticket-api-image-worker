@@ -36,12 +36,12 @@ TTL_EN_SEGUNDOS = 60
 
 [env.production]
 name = "tickets-images-worker-production"
+kv_namespaces = [
+    { binding = "TICKETS_QR_IMAGES", id = "47adcdcd224842dca5b5c91bd51e3f90", preview_id = "47b219e92f9a4f68980f5f5c84cc7218" }
+]
 
 [env.production.vars]
 API_URL = "https://tickets-api-production.fly.dev/api/v1/tickets/qr/info"
 APP_ENV = "production"
 TTL_EN_SEGUNDOS = 600
 # TTL_EN_SEGUNDOS = 2592000 # pa cuando estemos cerca de la pega
-kv_namespaces = [
-    { binding = "TICKETS_QR_IMAGES", id = "aa45c255f6f441dda71e45b0c11f132a", preview_id = "b297786957b249dca99978fad2cf95cb" }
-]
