@@ -1,7 +1,7 @@
 import React from "react";
 import qr from "qr-pure-image";
 
-import { halfJsconfSVG, jsconfSVG } from './svg'
+import { halfJsconfSVG, jsconfSVG } from "./svg";
 
 interface Props {
   username: string;
@@ -30,14 +30,22 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
   const svg = qr.svg(ticketId, 250);
 
   return (
-    <div style={{ display: "flex", background: colors.jsconfBackground, padding: '1rem' }}>  <div
+    <div
+      style={{
+        display: "flex",
+        background: colors.jsconfBackground,
+        padding: "1rem",
+        height: "100%",
+      }}
+    >
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
           flexShrink: 0,
           boxSizing: "border-box",
-          boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
-          borderWidth: 8,
+          boxShadow: "rgba(149, 157, 165, 0.2) 0px 16px 48px",
+          borderWidth: 16,
           color: colors.white,
           borderStyle: "solid",
           borderColor: colors.jsconfYellow,
@@ -52,7 +60,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
         <div
           id="HEADER"
           style={{
-            padding: "1rem",
+            padding: "2rem",
             display: "flex",
             flexDirection: "row",
             alignItems: "flex-start",
@@ -68,12 +76,12 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
               <img
                 src={imageUrl}
                 style={{
-                  height: "60px",
-                  width: "60px",
+                  height: "120px",
+                  width: "120px",
                   borderRadius: "50%",
-                  marginRight: "1rem",
+                  marginRight: "2rem",
                   borderStyle: "solid",
-                  borderWidth: "1px",
+                  borderWidth: "2px",
                   borderColor: colors.jsconfYellow,
                 }}
               />
@@ -81,10 +89,10 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span
                 style={{
-                  fontSize: 16,
+                  fontSize: 32,
                   fontFamily: "Koulen",
-                  lineHeight: "1rem",
-                  height: 30,
+                  lineHeight: "2rem",
+                  height: 60,
                   verticalAlign: "center",
                   fontWeight: "bold",
                   color: colors.jsconfYellow,
@@ -95,10 +103,10 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
               </span>
               <span
                 style={{
-                  fontSize: 24,
+                  fontSize: 48,
                   fontWeight: "bold",
                   fontFamily: "Koulen",
-                  lineHeight: "1rem",
+                  lineHeight: "2rem",
                   verticalAlign: "center",
                   margin: 0,
                   textTransform: "uppercase",
@@ -109,13 +117,13 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
             </div>
           </div>
           <div id="RIGHT_SIDE_CONTAINER" style={{ display: "flex" }}>
-            <img src={jsconfAsBase64} width={45} height={45} />
+            <img src={jsconfAsBase64} width={90} height={90} />
           </div>
         </div>
         <div
           id="BODY"
           style={{
-            padding: "1rem",
+            padding: "2rem",
             display: "flex",
             flexDirection: "row",
             lineHeight: "0.5em",
@@ -123,38 +131,52 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
             width: "100%",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              justifyContent: "center",
+            }}
+          >
             <h1
               style={{
-                fontSize: 84,
-                lineHeight: '84px',
+                fontSize: 168,
+                lineHeight: "168px",
                 fontFamily: "Koulen",
                 margin: 0,
                 padding: 0,
-                transform: "translateY(30px)"
+                transform: "translateY(30px)",
               }}
             >
               JSCONF CHILE
             </h1>
-            <h3 style={{ fontSize: 34, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-30px)"}}>FEB.03-04 2023 | Santiago</h3>
+            <h3
+              style={{
+                fontSize: 68,
+                fontFamily: "Koulen",
+                lineHeight: "60px",
+                margin: 0,
+                padding: 0,
+                transform: "translateY(-30px)",
+              }}
+            >
+              FEB.03-04 2023 | Santiago
+            </h3>
           </div>
           <div
             style={{
+              height: 340,
+              width: 340,
               display: "flex",
-              width: 230,
-              height: 230,
               justifyContent: "flex-start",
               alignItems: "flex-end",
               overflow: "hidden",
-              top: '63px',
-              left: '50px'
+              top: "249px",
+              left: "80px",
             }}
           >
-          <img
-            src={halfJsconfAsBase64}
-            width={230}
-            height={230}
-          />
+            <img src={halfJsconfAsBase64} width={340} height={340} />
           </div>
         </div>
       </div>
