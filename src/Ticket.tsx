@@ -23,6 +23,9 @@ const colors = {
 const halfJsconfAsBase64 = "data:image/svg+xml;base64," + btoa(halfJsconfSVG);
 const jsconfAsBase64 = "data:image/svg+xml;base64," + btoa(jsconfSVG);
 
+const normalizedString = (str: string) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
 export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
   const svg = qr.svg(ticketId, 250);
 
@@ -101,7 +104,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                   textTransform: "uppercase",
                 }}
               >
-                {fullName || "SETEA TU NOMBRE 😱!"}
+                {fullName ? normalizedString(fullName) : "SETEA TU NOMBRE 😱!"}
               </span>
             </div>
           </div>
@@ -128,12 +131,12 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                 fontFamily: "Koulen",
                 margin: 0,
                 padding: 0,
-                transform: "translateY(25px)"
+                transform: "translateY(30px)"
               }}
             >
               JSCONF CHILE
             </h1>
-            <h3 style={{ fontSize: 60, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-25px)"}}>FEB.03-04</h3>
+            <h3 style={{ fontSize: 34, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-30px)"}}>FEB.03-04 2023 | Santiago</h3>
           </div>
           <div
             style={{
