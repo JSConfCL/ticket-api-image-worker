@@ -61,6 +61,7 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
     }
     console.log(`Checking ticket if ${ticketId}`);
     console.log("checking if the image is stored");
+    await ticketsKV.delete(ticketId);
     const { value: storedImage } = await ticketsKV.getWithMetadata<{
       length: string;
     }>(ticketId);
