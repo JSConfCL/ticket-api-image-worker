@@ -23,6 +23,9 @@ const colors = {
 const halfJsconfAsBase64 = "data:image/svg+xml;base64," + btoa(halfJsconfSVG);
 const jsconfAsBase64 = "data:image/svg+xml;base64," + btoa(jsconfSVG);
 
+const normalizedString = (str: string) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
 export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
   const svg = qr.svg(ticketId, 250);
 
@@ -101,7 +104,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                   textTransform: "uppercase",
                 }}
               >
-                {fullName || "SETEA TU NOMBRE 😱!"}
+                {fullName ? normalizedString(fullName) : "SETEA TU NOMBRE 😱!"}
               </span>
             </div>
           </div>
