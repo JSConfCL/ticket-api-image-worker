@@ -128,12 +128,12 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                 fontFamily: "Koulen",
                 margin: 0,
                 padding: 0,
-                transform: "translateY(25px)"
+                transform: "translateY(30px)"
               }}
             >
               JSCONF CHILE
             </h1>
-            <h3 style={{ fontSize: 60, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-25px)"}}>FEB.03-04</h3>
+            <h3 style={{ fontSize: 34, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-30px)"}}>FEB.03-04 2023 | Santiago</h3>
           </div>
           <div
             style={{
