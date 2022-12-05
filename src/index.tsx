@@ -50,13 +50,16 @@ defaultImageHeaders.append("Content-Disposition", "inline");
 defaultImageHeaders.append("Strict-Transport-Security", "max-age=31536000");
 
 app.get("/ticket/image/:ticketId", cors(), async (c) => {
+  console.log("Starting worker");
   try {
+    console.log("checking if the image is stored");
     const env = c.env as Env;
     const ticketsKV = env.TICKETS_QR_IMAGES as KVNamespace;
     const ticketId = c.req.param("ticketId");
     if (!ticketId) {
       throw new Error("no ticket");
     }
+    console.log(`Checking ticket if ${ticketId}`);
     console.log("checking if the image is stored");
     const { value: storedImage } = await ticketsKV.getWithMetadata<{
       length: string;
