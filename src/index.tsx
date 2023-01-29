@@ -72,9 +72,22 @@ app.get("/ticket/image/:ticketId", cors(), async (c) => {
     }
     const response = await getApiInformation(env.API_URL, ticketId);
     // Hit our API
-    console.log("creating image with API data", { response });
+    console.log('URL', env.API_URL)
+    console.log("creating image with API data", JSON.stringify(response));
+    const ticketName =
+      response.ticketType === 'meetup'
+        ? response.ticketName
+        : response.ticketType === 'workshop'
+          ? 'Workshop'
+          : 'JSConf Chile'
+    const ticketType = response.ticketType === 'meetup' || response.ticketType === 'workshop'
+      ? response.ticketType
+      : 'jsconf'
     const img = await createImage(
       <Ticket
+        ticketName={ticketName}
+        ticketType={ticketType}
+        ticketDescription={response.ticketDescription}
         ticketId={response.ticketId}
         username={response.username}
         fullName={response.name}

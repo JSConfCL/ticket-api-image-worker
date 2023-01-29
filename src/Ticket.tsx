@@ -8,6 +8,9 @@ interface Props {
   ticketId: string;
   fullName: string | null;
   imageUrl: string | null;
+  ticketName?: string;
+  ticketType?: string;
+  ticketDescription?: string;
 }
 
 const colors = {
@@ -20,17 +23,47 @@ const colors = {
   black: "#000000",
 };
 
-const halfJsconfAsBase64 = "data:image/svg+xml;base64," + btoa(halfJsconfSVG);
-const jsconfAsBase64 = "data:image/svg+xml;base64," + btoa(jsconfSVG);
-
 const normalizedString = (str: string) =>
   str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
+export const Ticket = ({ username, ticketId, fullName, imageUrl, ticketName = 'JSConf Chile', ticketType = 'jsconf', ticketDescription }: Props) => {
+  const theme = {
+    jsconf: {
+      color: "white",
+      altColor: "#F0E040",
+      bgColor: "#1E2019",
+      logoColor: "white",
+      halfIcon: halfJsconfSVG('#000'),
+      icon: jsconfSVG('#F0E040'),
+      primaryFontSize: 84,
+      secondaryFontSize: 34,
+    },
+    workshop: {
+      color: "white",
+      altColor: "#F0E040",
+      bgColor: "#000",
+      logoColor: "white",
+      halfIcon: halfJsconfSVG('#fff'),
+      icon: jsconfSVG('#F0E040'),
+      primaryFontSize: 84,
+      secondaryFontSize: 20,
+    },
+    meetup: {
+      color: "#333",
+      altColor: "#F45B69",
+      bgColor: "white",
+      logoColor: "#333",
+      halfIcon: halfJsconfSVG('#333'),
+      icon: jsconfSVG('#F45B69'),
+      primaryFontSize: 60,
+      secondaryFontSize: 34,
+    },
+  }[ticketType];
+
   const svg = qr.svg(ticketId, 250);
 
   return (
-    <div style={{ display: "flex", background: colors.jsconfBackground, padding: '1rem' }}>  <div
+    <div style={{ display: "flex", background: theme.bgColor, padding: '1rem' }}>  <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -38,13 +71,13 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
           boxSizing: "border-box",
           boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
           borderWidth: 8,
-          color: colors.white,
+          color: theme.color,
           borderStyle: "solid",
-          borderColor: colors.jsconfYellow,
+          borderColor: theme.altColor,
           borderRadius: 0,
           fontFamily: "Inter",
           lineHeight: "1em",
-          backgroundColor: colors.jsconfBackground,
+          backgroundColor: theme.bgColor,
           width: "100%",
           height: "100%",
         }}
@@ -74,7 +107,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                   marginRight: "1rem",
                   borderStyle: "solid",
                   borderWidth: "1px",
-                  borderColor: colors.jsconfYellow,
+                  borderColor: theme.altColor,
                 }}
               />
             </div>
@@ -87,7 +120,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                   height: 30,
                   verticalAlign: "center",
                   fontWeight: "bold",
-                  color: colors.jsconfYellow,
+                  color: theme.altColor,
                   margin: 0,
                 }}
               >
@@ -104,12 +137,12 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
                   textTransform: "uppercase",
                 }}
               >
-                {fullName ? normalizedString(fullName) : "SETEA TU NOMBRE 😱!"}
+                {'Prueba' ??  "SETEA TU NOMBRE 😱!"}
               </span>
             </div>
           </div>
           <div id="RIGHT_SIDE_CONTAINER" style={{ display: "flex" }}>
-            <img src={jsconfAsBase64} width={45} height={45} />
+            <img src={theme.icon} width={45} height={45} />
           </div>
         </div>
         <div
@@ -126,17 +159,19 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
           <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", }}>
             <h1
               style={{
-                fontSize: 84,
-                lineHeight: '84px',
+                fontSize: theme.primaryFontSize,
+                lineHeight: '80px',
                 fontFamily: "Koulen",
                 margin: 0,
                 padding: 0,
                 transform: "translateY(30px)"
               }}
             >
-              JSCONF CHILE
-            </h1>
-            <h3 style={{ fontSize: 34, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-30px)"}}>FEB.03-04 2023 | Santiago</h3>
+              {ticketName}
+          </h1>
+          <h3 style={{ fontSize: theme.secondaryFontSize, fontFamily: "Koulen", lineHeight: '60px', margin: 0, padding: 0, transform: "translateY(-30px)"}}>{ticketType === 'meetup' || ticketType === 'workshop' ? ticketDescription : 'FEB.03-04 2023 | Santiago'}</h3>
+
+
           </div>
           <div
             style={{
@@ -151,7 +186,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl }: Props) => {
             }}
           >
           <img
-            src={halfJsconfAsBase64}
+            src={theme.halfIcon!}
             width={230}
             height={230}
           />
