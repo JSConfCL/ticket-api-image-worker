@@ -137,7 +137,7 @@ export const Ticket = ({ username, ticketId, fullName, imageUrl, ticketName = 'J
                   textTransform: "uppercase",
                 }}
               >
-                {'Prueba' ??  "SETEA TU NOMBRE 😱!"}
+                {fullName ? normalizedString(fullName) : "SETEA TU NOMBRE 😱!"}
               </span>
             </div>
           </div>
